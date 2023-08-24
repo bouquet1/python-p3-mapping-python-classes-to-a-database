@@ -35,6 +35,17 @@ class Song:
         """
 
         CURSOR.execute(sql, (self.name, self.album))
+        CONN.commit()
 
-    # Commit the changes to the database
-    # db_connection.commit()
+        self.id = CURSOR.execute("SELECT last_insert_rowid() FROM songs").fetchone()[0]
+
+    # Commit the changes to the database CONN.commit() 
+    # CONN = database connection object. 
+
+#class method will wrap the code to create a new Song instance, save it, and persist it. Here, we use keyword arguments to pass a name and album into our create() method. We use that name and album to instantiate a new song. Then, we use the save method to persist that song to the database.
+    @classmethod
+    def create(cls, name, album):
+        song = Song(name, album)
+        song.save()
+        return song
+    
